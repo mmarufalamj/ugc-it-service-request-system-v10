@@ -1,0 +1,33 @@
+# UGC IT Service Request System - Security Configuration
+
+# Prevent directory listing
+Options -Indexes
+
+# Block access to sensitive folders
+<IfModule mod_authz_core.c>
+    <FilesMatch "\.(php|sql|log|ini|json|example|example)$">
+        # Allow index.php and other public files
+    </FilesMatch>
+    
+    # Block access to config and includes
+    RewriteEngine On
+    RewriteRule ^config/.*$ - [F,L]
+    RewriteRule ^includes/.*$ - [F,L]
+    RewriteRule ^install/.*$ - [F,L]
+</IfModule>
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# PHP Settings (if allowed by host)
+<IfModule mod_php.c>
+    php_flag display_errors off
+    php_value max_execution_time 300
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+</IfModule>
