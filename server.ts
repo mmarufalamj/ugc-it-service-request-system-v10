@@ -1750,9 +1750,129 @@ try {
   console.error("Data-share access log backfill error:", e);
 }
 
+// Migration validation helpers
+const validatePostgresMigrations = async (): Promise<{ valid: boolean; missingMigrations: string[] }> => {
+  try {
+    // Check if schema_migrations table exists
+    const result = await db.prepare(`
+      SELECT table_name FROM information_schema.tables 
+      WHERE table_schema = 'public' AND table_name = 'schema_migrations'
+    `).all() as any[];
+    
+    if (!result || result.length === 0) {
+      return {
+        valid: false,
+        missingMigrations: ["schema_migrations table not found - migrations have not been applied"]
+      };
+    }
+
+    // Get list of expected migrations
+    const migrationsDir = path.join(__dirname, "migrations");
+    const expectedMigrations = fs
+      .readdirSync(migrationsDir)
+      .filter((file) => /^\d+_.+\.sql$/.test(file))
+      .map(file => file.replace(/\.sql$/, ""))
+      .sort();
+
+    // Check which migrations have been applied
+    const appliedResult = await db.prepare(`
+      SELECT version FROM schema_migrations ORDER BY version
+    `).all() as Array<{ version: string }>;
+    
+    const appliedMigrations = new Set(appliedResult.map(r => r.version));
+    const missingMigrations = expectedMigrations.filter(m => !appliedMigrations.has(m));
+
+    if (missingMigrations.length > 0) {
+      return {
+        valid: false,
+        missingMigrations
+      };
+    }
+
+    // Validate that critical tables exist
+    const criticalTables = ["users", "applications", "roles", "user_sessions", "audit_logs"];
+    for (const table of criticalTables) {
+      const tableCheck = await db.prepare(`
+        SELECT table_name FROM information_schema.tables 
+        WHERE table_schema = 'public' AND table_name = ?
+      `).all(table) as any[];
+      
+      if (!tableCheck || tableCheck.length === 0) {
+        return {
+          valid: false,
+          missingMigrations: [`Critical table '${table}' does not exist`]
+        };
+      }
+    }
+
+    return { valid: true, missingMigrations: [] };
+  } catch (error) {
+    return {
+      valid: false,
+      missingMigrations: [`Migration validation error: ${error instanceof Error ? error.message : String(error)}`]
+    };
+  }
+};
+
+const validateSQLiteSchema = async (): Promise<{ valid: boolean; missingTables: string[] }> => {
+  try {
+    const criticalTables = ["users", "applications", "roles", "user_sessions", "audit_logs"];
+    const missingTables: string[] = [];
+
+    for (const table of criticalTables) {
+      try {
+        const result = db.prepare(`SELECT name FROM sqlite_master WHERE type='table' AND name=?`).get(table) as any;
+        if (!result) {
+          missingTables.push(table);
+        }
+      } catch (e) {
+        missingTables.push(table);
+      }
+    }
+
+    return {
+      valid: missingTables.length === 0,
+      missingTables
+    };
+  } catch (error) {
+    return {
+      valid: false,
+      missingTables: [`Schema validation error: ${error instanceof Error ? error.message : String(error)}`]
+    };
+  }
+};
+
+let schemaValidationResult: { valid: boolean; missingMigrations?: string[]; missingTables?: string[] } = {
+  valid: true
+};
+
 async function startServer() {
   const app = express();
   const PORT = Number(process.env.PORT) || 3000;
+
+  // Validate schema on startup
+  if (usingPostgres) {
+    console.log("Validating PostgreSQL migrations...");
+    const validation = await validatePostgresMigrations();
+    schemaValidationResult = validation;
+    
+    if (!validation.valid) {
+      const errorMsg = `Database schema validation failed:\n- ${validation.missingMigrations.join("\n- ")}\n\nRun 'npm run db:migrate:pg' before starting the server.`;
+      console.error(errorMsg);
+      process.exit(1);
+    }
+    console.log("✓ All PostgreSQL migrations are applied");
+  } else {
+    console.log("Validating SQLite schema...");
+    const validation = await validateSQLiteSchema();
+    schemaValidationResult = validation;
+    
+    if (!validation.valid) {
+      console.warn(`⚠ SQLite schema incomplete: ${validation.missingTables?.join(", ")}\nServer will attempt to create missing tables.`);
+    } else {
+      console.log("✓ SQLite schema is valid");
+    }
+  }
 
   app.disable("x-powered-by");
   if (process.env.TRUST_PROXY === "true") {
@@ -1810,15 +1930,23 @@ async function startServer() {
       if (usingPostgres) {
         await db.prepare("SELECT 1 AS ok").get();
       }
-      return res.json({
-        ok: true,
+      
+      const schemaValid = schemaValidationResult.valid;
+      const statusCode = schemaValid ? 200 : 503;
+      
+      return res.status(statusCode).json({
+        ok: schemaValid,
         database: usingPostgres ? "postgresql" : "sqlite",
+        schemaValid: schemaValidationResult.valid,
+        schemaIssues: schemaValidationResult.missingMigrations || schemaValidationResult.missingTables || [],
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
       return res.status(503).json({
         ok: false,
         database: usingPostgres ? "postgresql" : "sqlite",
+        schemaValid: false,
+        schemaIssues: [error instanceof Error ? error.message : String(error)],
         timestamp: new Date().toISOString(),
       });
     }

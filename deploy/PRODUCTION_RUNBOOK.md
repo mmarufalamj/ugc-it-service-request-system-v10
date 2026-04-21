@@ -11,11 +11,12 @@
 
 ## First Deployment
 
-Run from the project folder:
+Run from the project folder in this exact order:
 
 ```powershell
 npm.cmd ci
 npm.cmd run db:migrate:pg
+npm.cmd run db:check-migrations
 npm.cmd run build
 npm.cmd run prod:preflight
 npm.cmd run pg:backup
@@ -28,6 +29,8 @@ Check:
 Invoke-WebRequest -UseBasicParsing http://localhost:3000/healthz
 ```
 
+Expected response should include `"schemaValid": true`.
+
 ## Deploy From Release Zip
 
 On the development machine:
@@ -38,7 +41,28 @@ npm.cmd run release
 
 Copy the newest `releases/ugc-it-service-release-*.zip` file to the server, extract it, then create `.env.local` from `.env.production.example`.
 
+**CRITICAL:** On the server, you MUST run migrations before starting:
+
+```powershell
+npm.cmd ci
+npm.cmd run db:migrate:pg
+npm.cmd run db:check-migrations
+npm.cmd run start
+```
+
 Do not copy local `.env.local`, `data/`, `backups/`, `pg-backups/`, `node_modules/`, logs, or SQLite files to production.
+
+## Database Migration Enforcement
+
+**The server will refuse to start if PostgreSQL migrations are not applied.**
+
+If you see an error like "Database schema validation failed", run:
+```powershell
+npm.cmd run db:migrate:pg
+npm.cmd run db:check-migrations
+```
+
+Then try starting the server again.
 
 ## Process Manager
 

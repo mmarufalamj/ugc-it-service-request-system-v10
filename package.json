@@ -22,6 +22,7 @@
     "db:backup": "node scripts/db-backup.mjs",
     "db:restore-latest": "node scripts/db-restore-latest.mjs",
     "db:migrate:pg": "node scripts/db-migrate-postgres.mjs",
+    "db:check-migrations": "node scripts/check-migrations.mjs",
     "db:copy:pg": "node scripts/db-copy-sqlite-to-postgres.mjs",
     "pg:backup": "node scripts/pg-backup.mjs",
     "pg:restore": "node scripts/pg-restore.mjs",
