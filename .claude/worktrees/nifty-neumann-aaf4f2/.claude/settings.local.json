@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "PowerShell(Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; Start-Sleep -Seconds 2; \"Port 3000 released\")",
+      "Bash(PORT=3001 npm run dev)",
+      "Bash(curl -s http://localhost:3001/api/session)",
+      "Bash(curl -s -X POST http://localhost:3001/api/login -H 'Content-Type: application/json' -d '{ *)",
+      "Bash(pkill -f \"npm run dev\")",
+      "Bash(cat)",
+      "Bash(npx tsx *)",
+      "Bash(rm check-hash.mjs)",
+      "Bash(pkill -9 -f \"tsx server.ts\")",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Force)",
+      "PowerShell(\"Killed all node processes\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(sed -i 's/^DATABASE_URL=/#DATABASE_URL=/' .env.local)",
+      "Bash(curl -s http://localhost:3000/api/session)",
+      "Bash(curl -s http://localhost:3000/api/system-settings)",
+      "Bash(grep -n \"#{convert\\\\|#{\\\\|`\\(#\" src/App.tsx | head -10)",
+      "Bash(git commit -m 'Fix: Correct template string syntax for Bengali numeral conversion *)"
+    ]
+  }
+}

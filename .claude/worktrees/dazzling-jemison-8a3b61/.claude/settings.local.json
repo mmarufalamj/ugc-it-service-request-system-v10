@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-Service postgresql-x64-18 -ErrorAction SilentlyContinue)",
+      "Bash(cd \"C:\\\\\\\\Users\\\\\\\\User\\\\\\\\Desktop\\\\\\\\Desktop Files\\\\\\\\ugc-it-service-request-system-v5\")",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(cat)",
+      "Bash(psql \"postgresql://ugc_app:ugc%402026@localhost:5432/ugc_it_service\" -f /tmp/check_data.sql)",
+      "Bash(npx tsx *)",
+      "Bash(curl -s -X GET http://localhost:3000/api/data-share/clients -H \"Content-Type: application/json\")",
+      "Bash(awk '/^function SystemSettings/,/^}/' src/App.tsx)",
+      "Bash(awk 'NR==3538,NR==3800 {if \\(/^}$/\\) {print NR\": \"$0; exit}}' src/App.tsx)",
+      "mcp__Claude_in_Chrome__switch_browser",
+      "mcp__Claude_Preview__preview_start",
+      "Read(//tmp/**)"
+    ]
+  }
+}

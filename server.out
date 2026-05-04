@@ -1,0 +1,13 @@
+
+> ugc-it-service-request-system@0.0.0 dev
+> tsx server.ts
+
+◇ injected env (11) from .env.local // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+Validating PostgreSQL migrations...
+✓ All PostgreSQL migrations are applied
+Server running on http://localhost:3000
+[2m2:32:08 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mresponse.html[22m
+[2m2:32:10 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mserver.out[22m
+[2m2:32:11 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mserver.out[22m
+[2m2:32:11 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mserver.out[22m

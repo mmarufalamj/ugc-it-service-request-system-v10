@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -n '\\\\\\\\api\\\\\\\\data-share' \"src/App.tsx\")",
+      "Bash(grep -nP 'fetch\\\\\\(`\\\\\\\\\\\\\\\\' \"src/App.tsx\")",
+      "Bash(awk 'NR<=8800 && /^\\(function|const|export\\)/{print NR\": \"$0}' \"src/App.tsx\")",
+      "Bash(awk 'NR==7975,/^}/{print NR\": \"$0; if\\(NR>7975 && /^}$/\\) exit}' \"src/App.tsx\")",
+      "Bash(awk 'NR>=8302 && NR<=12000{print NR\": \"$0; if\\(NR>8302 && /^}$/\\){exit}}' \"src/App.tsx\")",
+      "Bash(npm.cmd run *)",
+      "Bash(git stash *)",
+      "Bash(awk 'NR>=3761 && NR<=4000{print NR\": \"$0; if\\(NR>3761 && /^}$/\\){exit}}' \"src/App.tsx\")",
+      "Bash(PGPASSWORD='ugc@2026' psql -h localhost -U ugc_app -d ugc_it_service -c \"SELECT id, name, status, created_at, last_used_at, revoked_at FROM data_share_clients ORDER BY id;\")",
+      "Bash(awk 'NR>=6056 && NR<=6260' \"src/App.tsx\")",
+      "PowerShell(Get-Process | Where-Object { $_.ProcessName -match 'node|tsx' } | Select-Object Id, ProcessName, StartTime, CommandLine | Format-Table -AutoSize)",
+      "PowerShell(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\")",
+      "Bash(curl -fsS http://localhost:3000/healthz)",
+      "Bash(node -e \"require\\('pptxgenjs'\\);console.log\\('pptxgenjs OK'\\)\")",
+      "Bash(npm.cmd install *)",
+      "Bash(mkdir -p \"/c/Users/User/Desktop/UGC-Presentation\")",
+      "Read(//c/Users/User/Desktop/**)",
+      "Bash(node build.js)",
+      "Bash(node -e ' *)",
+      "Bash(python \"C:/Users/User/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/cdfe30a4-6a72-43c3-a5a5-ba5842043173/6a6c7144-3eae-4374-a532-e2f93e75419f/skills/pptx/scripts/office/soffice.py\" --headless --convert-to pdf UGC-IT-Service-Request-System.pptx)",
+      "Bash(where soffice *)",
+      "Read(//c/Program Files/LibreOffice/program/**)",
+      "Read(//c/Program Files \\(x86\\)/LibreOffice/program/**)"
+    ]
+  }
+}

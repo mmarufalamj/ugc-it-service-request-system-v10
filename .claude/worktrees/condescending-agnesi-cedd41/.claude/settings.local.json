@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:3000/api/system-settings)",
+      "Bash(python3 -c \"import sys, json; data = json.load\\(sys.stdin\\); print\\('selectedDailyQuoteIndex' in data, data.get\\('selectedDailyQuoteIndex', 'NOT FOUND'\\)\\)\")",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(curl -s -c cookies.txt http://localhost:3000)",
+      "Bash(curl -s -X PUT http://localhost:3000/api/system-settings -H 'Content-Type: application/json' -b cookies.txt -d '{ *)",
+      "Bash(pkill -f \"tsx server.ts\")",
+      "PowerShell(Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }; Start-Sleep -Seconds 2; if \\(Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction SilentlyContinue\\) { 'Still listening' } else { 'Port 3000 freed' })",
+      "Bash(awk 'NR>=8795 && NR<=8900' src/App.tsx)",
+      "Bash(awk '/^function |^const [A-Z][a-zA-Z]+ = \\\\\\(|^const [A-Z][a-zA-Z]+ : / {print NR\": \"$0}' src/App.tsx)",
+      "Bash(awk -F: '{if\\($1>=7900 && $1<=8400\\) print}')",
+      "Bash(awk 'NR>=8400 && NR<=8500 && /^  return \\\\\\(/{print NR\": \"$0; for\\(i=1;i<=5;i++\\){getline line; print \\(NR+i\\)\": \"line}; exit}' src/App.tsx)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill //F //PID 47128)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\" http://localhost:3001/api/system-settings)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(awk '{print $NF}')",
+      "Bash(taskkill //F //PID 29372 //T)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:3002/api/system-settings)",
+      "Bash(curl -s http://localhost:3002/api/system-settings)",
+      "Bash(awk 'NR>=7985 && NR<=8140' src/App.tsx)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:3333/api/system-settings)",
+      "Bash(curl -s http://localhost:3333/api/data-share/clients)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\User\\\\Desktop\\\\Desktop Files\\\\ugc-it-service-request-system-v5\" -Recurse -File | Select-Object -First 100 | ForEach-Object {$_.FullName})"
+    ]
+  }
+}

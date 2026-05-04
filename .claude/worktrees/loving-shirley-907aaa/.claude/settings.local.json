@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(awk '/function.*SystemSettings|return.*SystemSettings|case.*settings/,/return null|<\\\\/div>\\\\s*<\\\\/div>\\\\s*<\\\\/div>/ { if \\(/\\\\{index \\\\+ 1\\\\}|index + 1/\\) print NR\": \"$0 }' App.tsx)",
+      "Bash(python3)",
+      "Bash(grep -n \"<td>\\\\${index + 1}</td>\" App.tsx)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(npm run *)",
+      "Bash(pkill -f \"npm run dev\\\\|tsx server.ts\")"
+    ]
+  }
+}

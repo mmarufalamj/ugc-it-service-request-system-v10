@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "UGC IT Service - Dev Server (Express + Vite)",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "set PORT=3333 && set VITE_HMR_PORT=24701 && npm run dev"],
+      "port": 3333
+    }
+  ]
+}

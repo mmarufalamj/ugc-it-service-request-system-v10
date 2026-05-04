@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(curl -s http://localhost:3000/)",
+      "mcp__Claude_in_Chrome__switch_browser",
+      "Bash(mkdir -p \"C:\\\\Users\\\\User\\\\Desktop\\\\Desktop Files\\\\ugc-it-service-request-system-v5\\\\.claude\\\\worktrees\\\\zen-torvalds-2726af\\\\.claude\")",
+      "Bash(cp \"C:\\\\Users\\\\User\\\\Desktop\\\\Desktop Files\\\\ugc-it-service-request-system-v5\\\\.claude\\\\launch.json\" \"C:\\\\Users\\\\User\\\\Desktop\\\\Desktop Files\\\\ugc-it-service-request-system-v5\\\\.claude\\\\worktrees\\\\zen-torvalds-2726af\\\\.claude\\\\launch.json\")",
+      "mcp__Claude_Preview__preview_start",
+      "mcp__Claude_in_Chrome__list_connected_browsers",
+      "Bash(python3)",
+      "Bash(xxd)",
+      "Bash(npm run *)",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Force -ErrorAction SilentlyContinue)"
+    ]
+  }
+}
